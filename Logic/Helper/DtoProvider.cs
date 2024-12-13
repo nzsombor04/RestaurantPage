@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Entities.Dtos.Item;
 using Entities.Dtos.Restaurant;
 using Entities.Dtos.Review;
 using Entities.Models;
@@ -23,6 +24,8 @@ namespace Logic.Helper
                 cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>();
                 cfg.CreateMap<Review, ReviewViewDto>();
                 cfg.CreateMap<ReviewCreateDto, Review>();
+                cfg.CreateMap<ItemCreateUpdateDto, Item>();
+                cfg.CreateMap<Item, ItemViewDto>();
             });
 
             Mapper = new Mapper(config);

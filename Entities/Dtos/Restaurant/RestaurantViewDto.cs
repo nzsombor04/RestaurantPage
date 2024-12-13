@@ -16,7 +16,7 @@ namespace Entities.Dtos.Restaurant
         public string Address { get; set; } = "";
         public string Phone { get; set; } = "";
 
-        public IEnumerable<Item>? Menu { get; set; }
+        public IEnumerable<Entities.Models.Item>? Menu { get; set; }
         public IEnumerable<ReviewViewDto>? Reviews { get; set; }
 
         public int Reviewcount => Reviews?.Count() ?? 0;

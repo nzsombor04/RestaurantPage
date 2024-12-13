@@ -16,7 +16,6 @@ namespace Entities.Models
             Name = name;
             Description = description;
             Price = price;
-            Restaurants = new List<Restaurant>();
         }
 
         [Key]
