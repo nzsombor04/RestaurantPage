@@ -18,6 +18,6 @@ namespace Entities.Dtos.Item
         
         public required int Price { get; set; }
 
-        public string RestaurantId { get; set; } = "";
+        public List<string> RestaurantId { get; set; } = new List<string>();
     }
 }

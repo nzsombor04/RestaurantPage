@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(RestaurantPageContext))]
-    [Migration("20241213181243_base")]
-    partial class @base
+    [Migration("20241213222314_ManyToMany")]
+    partial class ManyToMany
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,14 +47,7 @@ namespace Data.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("RestaurantId")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Items");
                 });
@@ -95,7 +88,7 @@ namespace Data.Migrations
 
                     b.Property<string>("RestaurantId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Text")
                         .IsRequired()
@@ -103,7 +96,24 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("RestaurantId");
+
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("ItemRestaurant", b =>
+                {
+                    b.Property<string>("MenuId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("RestaurantsId")
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("MenuId", "RestaurantsId");
+
+                    b.HasIndex("RestaurantsId");
+
+                    b.ToTable("ItemRestaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -304,15 +314,30 @@ namespace Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("Entities.Models.Item", b =>
+            modelBuilder.Entity("Entities.Models.Review", b =>
                 {
                     b.HasOne("Entities.Models.Restaurant", "Restaurant")
-                        .WithMany("Menu")
+                        .WithMany("Reviews")
                         .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Restaurant");
+                });
+
+            modelBuilder.Entity("ItemRestaurant", b =>
+                {
+                    b.HasOne("Entities.Models.Item", null)
+                        .WithMany()
+                        .HasForeignKey("MenuId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Models.Restaurant", null)
+                        .WithMany()
+                        .HasForeignKey("RestaurantsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -368,7 +393,7 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Entities.Models.Restaurant", b =>
                 {
-                    b.Navigation("Menu");
+                    b.Navigation("Reviews");
                 });
 #pragma warning restore 612, 618
         }

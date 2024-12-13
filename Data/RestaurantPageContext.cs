@@ -24,7 +24,7 @@ namespace Data
         {
             builder.Entity<Restaurant>()
                 .HasMany(r => r.Menu)
-                .WithOne(i => i.Restaurant);
+                .WithMany(i => i.Restaurants);
 
             builder.Entity<Restaurant>()
                 .HasMany(r => r.Reviews)

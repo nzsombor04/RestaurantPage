@@ -15,11 +15,13 @@ namespace Logic.Logic
     {
         Repository<Item> repo;
         DtoProvider dtoProvider;
+        Repository<Restaurant> restaurantRepo;
 
-        public ItemLogic(Repository<Item> repo, DtoProvider dtoProvider)
+        public ItemLogic(Repository<Item> repo, DtoProvider dtoProvider, Repository<Restaurant> restaurantRepo)
         {
             this.repo = repo;
             this.dtoProvider = dtoProvider;
+            this.restaurantRepo = restaurantRepo;
         }
 
         public IEnumerable<ItemViewDto> GetAllItems()
@@ -33,6 +35,10 @@ namespace Logic.Logic
 
             if (repo.GetAll().FirstOrDefault(x => x.Name == i.Name) == null)
             {
+                i.Restaurants = restaurantRepo.GetAll() 
+                    .Where(x => dto.RestaurantId.Contains(x.Id))
+                    .ToList();
+
                 repo.Create(i);
             }
             else
