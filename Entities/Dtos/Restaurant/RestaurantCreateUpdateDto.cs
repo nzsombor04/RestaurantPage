@@ -8,8 +8,8 @@ namespace Entities.Dtos.Restaurant
 {
     public class RestaurantCreateUpdateDto
     {
-        public string Name { get; set; } = "";
-        public string Address { get; set; } = "";
-        public string Phone { get; set; } = "";
+        public required string Name { get; set; } = "";
+        public required string Address { get; set; } = "";
+        public required string Phone { get; set; } = "";
     }
 }

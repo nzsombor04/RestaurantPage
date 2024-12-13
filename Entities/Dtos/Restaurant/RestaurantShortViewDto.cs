@@ -12,6 +12,6 @@ namespace Entities.Dtos.Restaurant
         public string Name { get; set; } = "";
         public string Address { get; set; } = "";
         public string Phone { get; set; } = "";
-        public double AvaerageRating { get; set; } = 0;
+        public double AvarageRating { get; set; } = 0;
     }
 }
