@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace Entities.Dtos.Item
         
         public required int Price { get; set; }
 
-        public List<string> RestaurantIds { get; set; } = new List<string>();
+        public string RestaurantId { get; set; } = "";
     }
 }

@@ -44,7 +44,14 @@ namespace Data.Migrations
                     b.Property<int>("Price")
                         .HasColumnType("int");
 
+                    b.Property<string>("RestaurantId")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("RestaurantId");
 
                     b.ToTable("Items");
                 });
@@ -94,21 +101,6 @@ namespace Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Reviews");
-                });
-
-            modelBuilder.Entity("ItemRestaurant", b =>
-                {
-                    b.Property<string>("MenuId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("RestaurantsId")
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("MenuId", "RestaurantsId");
-
-                    b.HasIndex("RestaurantsId");
-
-                    b.ToTable("ItemRestaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -309,19 +301,15 @@ namespace Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("ItemRestaurant", b =>
+            modelBuilder.Entity("Entities.Models.Item", b =>
                 {
-                    b.HasOne("Entities.Models.Item", null)
-                        .WithMany()
-                        .HasForeignKey("MenuId")
+                    b.HasOne("Entities.Models.Restaurant", "Restaurant")
+                        .WithMany("Menu")
+                        .HasForeignKey("RestaurantId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Entities.Models.Restaurant", null)
-                        .WithMany()
-                        .HasForeignKey("RestaurantsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Restaurant");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -373,6 +361,11 @@ namespace Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Restaurant", b =>
+                {
+                    b.Navigation("Menu");
                 });
 #pragma warning restore 612, 618
         }
