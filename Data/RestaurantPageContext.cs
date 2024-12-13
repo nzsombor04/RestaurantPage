@@ -22,6 +22,10 @@ namespace Data
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            builder.Entity<Restaurant>()
+                .HasMany(r => r.Menu)
+                .WithMany(i => i.Restaurants);
+
             base.OnModelCreating(builder);
         }
     }
