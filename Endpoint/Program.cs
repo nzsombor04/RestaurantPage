@@ -1,3 +1,6 @@
+using Data;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Endpoint
 {
@@ -8,6 +11,12 @@ namespace Endpoint
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddDbContext<RestaurantPageContext>(options =>
+            {
+                options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=RestaurantPageDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True");
+                options.UseLazyLoadingProxies();
+            });
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

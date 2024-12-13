@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,14 +10,12 @@ namespace Entities.Models
 {
     public class Restaurant
     {
-        public Restaurant(string name, string address, string phone, ICollection<Item> menu, ICollection<Review> reviews)
+        public Restaurant(string name, string address, string phone)
         {
             Id = Guid.NewGuid().ToString();
             Name = name;
             Address = address;
             Phone = phone;
-            Menu = menu;
-            Reviews = reviews;
         }
 
         [Key]
@@ -32,8 +31,10 @@ namespace Entities.Models
         [StringLength(20)]
         public string Phone { get; set; }
 
+        [NotMapped]
         public virtual ICollection<Item> Menu { get; set; }
 
+        [NotMapped]
         public ICollection<Review> Reviews { get; set; }
     }
 }
