@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Item
+    public class Item : IIdEntity
     {
         public Item(string name, string description, int price)
         {

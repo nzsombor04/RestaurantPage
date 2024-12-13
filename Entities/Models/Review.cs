@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Helpers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Models
 {
-    public class Review
+    public class Review : IIdEntity
     {
         public Review(string restaurantId, string text, int rating)
         {
