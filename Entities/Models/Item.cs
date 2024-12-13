@@ -5,21 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities
+namespace Entities.Models
 {
     public class Item
     {
         public Item(string name, string description, int price)
         {
-            this.Id = Guid.NewGuid().ToString();
-            this.Name = name;
-            this.Description = description;
-            this.Price = price;
+            Id = Guid.NewGuid().ToString();
+            Name = name;
+            Description = description;
+            Price = price;
         }
 
         [Key]
         [StringLength(50)]
-        public string Id { get; set; } 
+        public string Id { get; set; }
 
         [StringLength(50)]
         public string Name { get; set; }
