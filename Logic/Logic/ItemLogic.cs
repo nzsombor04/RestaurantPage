@@ -55,6 +55,13 @@ namespace Logic.Logic
         public void UpdateItem(string id, ItemCreateUpdateDto dto)
         {
             var old = repo.FindById(id);
+
+            old.Restaurants.Clear();
+
+            old.Restaurants = restaurantRepo.GetAll()
+                .Where(x => dto.RestaurantId.Contains(x.Id))
+                .ToList();
+
             dtoProvider.Mapper.Map(dto, old);
             repo.Update(old);
         }
