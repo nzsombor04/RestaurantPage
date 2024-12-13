@@ -20,7 +20,13 @@ namespace Logic.Helper
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Restaurant, RestaurantViewDto>();
-                cfg.CreateMap<Restaurant, RestaurantShortViewDto>();
+
+                cfg.CreateMap<Restaurant, RestaurantShortViewDto>()
+                .AfterMap((src, dest) => 
+                { 
+                    dest.AvarageRating = src.Reviews?.Count() > 0 ? src.Reviews.Average(r => r.Rating) : 0;
+                });
+
                 cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>();
                 cfg.CreateMap<Review, ReviewViewDto>();
                 cfg.CreateMap<ReviewCreateDto, Review>();

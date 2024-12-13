@@ -17,6 +17,7 @@ namespace Endpoint
             builder.Services.AddTransient<RestaurantLogic>();
             builder.Services.AddTransient<DtoProvider>();
             builder.Services.AddTransient<ItemLogic>();
+            builder.Services.AddTransient<ReviewLogic>();
 
 
             builder.Services.AddDbContext<RestaurantPageContext>(options =>
