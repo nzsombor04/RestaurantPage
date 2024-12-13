@@ -16,6 +16,7 @@ namespace Entities.Models
             Name = name;
             Description = description;
             Price = price;
+            Restaurants = new List<Restaurant>();
         }
 
         [Key]
@@ -27,6 +28,8 @@ namespace Entities.Models
 
         [StringLength(500)]
         public string Description { get; set; }
+
+        public virtual ICollection<Restaurant> Restaurants { get; set; }
 
         public int Price { get; set; }
     }
