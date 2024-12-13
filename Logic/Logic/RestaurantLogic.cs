@@ -40,12 +40,12 @@ namespace Logic.Logic
             return repo.GetAll().Select(x => dtoProvider.Mapper.Map<RestaurantShortViewDto>(x));
         }
 
-        public void DeleteMovie(string id)
+        public void DeleteRestaurant(string id)
         {
             repo.DeleteById(id);
         }
 
-        public void UpdateMovie(string id, RestaurantCreateUpdateDto dto)
+        public void UpdateRestaurant(string id, RestaurantCreateUpdateDto dto)
         {
             var old = repo.FindById(id);
             dtoProvider.Mapper.Map(dto, old);

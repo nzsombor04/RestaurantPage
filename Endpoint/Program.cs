@@ -1,5 +1,6 @@
 using Data;
-
+using Logic.Helper;
+using Logic.Logic;
 using Microsoft.EntityFrameworkCore;
 
 namespace Endpoint
@@ -11,6 +12,11 @@ namespace Endpoint
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+            builder.Services.AddTransient(typeof(Repository<>));
+            builder.Services.AddTransient<RestaurantLogic>();
+            builder.Services.AddTransient<DtoProvider>();
+
 
             builder.Services.AddDbContext<RestaurantPageContext>(options =>
             {
