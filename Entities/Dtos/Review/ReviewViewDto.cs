@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos.ReviewDto
-{
+namespace Entities.Dtos.Review 
+{ 
     public class ReviewViewDto
     {
         public string Text { get; set; } = "";
