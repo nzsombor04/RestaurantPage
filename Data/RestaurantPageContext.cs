@@ -24,8 +24,11 @@ namespace Data
         {
             builder.Entity<Restaurant>()
                 .HasMany(r => r.Menu)
-                .WithOne(i => i.Restaurant)
-                .HasForeignKey(i => i.RestaurantId);
+                .WithOne(i => i.Restaurant);
+
+            builder.Entity<Restaurant>()
+                .HasMany(r => r.Reviews)
+                .WithOne(rev => rev.Restaurant);
 
             base.OnModelCreating(builder);
         }

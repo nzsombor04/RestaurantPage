@@ -19,7 +19,7 @@ namespace Logic.Logic
         public ItemLogic(Repository<Item> repo, DtoProvider dtoProvider)
         {
             this.repo = repo;
-            this.dtoProvider = new DtoProvider();
+            this.dtoProvider = dtoProvider;
         }
 
         public IEnumerable<ItemViewDto> GetAllItems()

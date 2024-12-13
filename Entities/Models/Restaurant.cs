@@ -37,6 +37,6 @@ namespace Entities.Models
         public virtual ICollection<Item> Menu { get; set; }
 
         [NotMapped]
-        public ICollection<Review> Reviews { get; set; }
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }
