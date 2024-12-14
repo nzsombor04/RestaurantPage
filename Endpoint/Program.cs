@@ -1,8 +1,11 @@
 using Data;
 using Logic.Helper;
 using Logic.Logic;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Endpoint
 {
@@ -33,6 +36,25 @@ namespace Endpoint
                 .AddEntityFrameworkStores<RestaurantPageContext>()
                 .AddDefaultTokenProviders();
 
+            builder.Services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                option.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = true;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidAudience = "restaurant.com",
+                    ValidIssuer = "restaurant.com",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("EzahosszukulcsamititkositEzahosszukulcsamititkositEzahosszukulcsamititkosit"))
+                };
+            }); ;
+
             builder.Services.AddDbContext<RestaurantPageContext>(options =>
             {
                 options.UseSqlServer("Server=(localdb)\\MSSQLLocalDB;Database=RestaurantPageDb;Trusted_Connection=True;TrustServerCertificate=True;MultipleActiveResultSets=True");
@@ -55,6 +77,7 @@ namespace Endpoint
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

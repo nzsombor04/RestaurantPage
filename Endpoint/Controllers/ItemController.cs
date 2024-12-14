@@ -1,5 +1,6 @@
 ﻿using Entities.Dtos.Item;
 using Logic.Logic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Endpoint.Controllers
@@ -16,6 +17,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public void AddItem(ItemCreateUpdateDto dto)
         {
             logic.AddItem(dto);
@@ -27,13 +29,15 @@ namespace Endpoint.Controllers
             return logic.GetAllItems();
         }
 
-        [HttpDelete]
+        [HttpDelete("id")]
+        [Authorize]
         public void DeleteItem(string id)
         {
             logic.DeleteItem(id);
         }
 
-        [HttpPut]
+        [HttpPut("id")]
+        [Authorize]
         public void UpdateItem(string id, [FromBody] ItemCreateUpdateDto dto)
         {
             logic.UpdateItem(id, dto);
