@@ -1,4 +1,5 @@
 ﻿using Entities.Dtos.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -22,15 +23,34 @@ namespace Endpoint.Controllers
             this.roleManager = roleManager;
         }
 
+        [HttpGet("grantadmin/{username}")]
+        [Authorize(Roles = "Admin")]
+        public async Task GrantAdmin(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+                throw new ArgumentException("User not found");
+            await userManager.AddToRoleAsync(user, "Admin");
+        }
+
+
         [HttpPost("register")]
         public async Task Register(UserInputDto dto)
-        {
-            var user = new IdentityUser(dto.Username);
-            await userManager.CreateAsync(user, dto.Password);
-            if (userManager.Users.Count() == 1)
+        { 
+            var existingUser = await userManager.FindByNameAsync(dto.Username);
+            if (existingUser != null)
             {
-                await roleManager.CreateAsync(new IdentityRole("Admin"));
-                await userManager.AddToRoleAsync(user, "Admin");
+                throw new ArgumentException("Username already exists");
+            }
+            else
+            {
+                var user = new IdentityUser(dto.Username);
+                await userManager.CreateAsync(user, dto.Password);
+                if (userManager.Users.Count() == 1)
+                {
+                    await roleManager.CreateAsync(new IdentityRole("Admin"));
+                    await userManager.AddToRoleAsync(user, "Admin");
+                }
             }
         }
 
