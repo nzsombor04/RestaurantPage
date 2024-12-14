@@ -3,6 +3,7 @@ using Entities.Dtos.Item;
 using Entities.Dtos.Restaurant;
 using Entities.Dtos.Review;
 using Entities.Models;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,14 @@ namespace Logic.Helper
 {
     public class DtoProvider
     {
+
+        UserManager<IdentityUser> userManager;
         public Mapper Mapper { get; }
 
-        public DtoProvider()
+        public DtoProvider(UserManager<IdentityUser> userManager)
         {
+            this.userManager = userManager;
+
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Restaurant, RestaurantViewDto>();
@@ -28,7 +33,11 @@ namespace Logic.Helper
                 });
 
                 cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>();
-                cfg.CreateMap<Review, ReviewViewDto>();
+                cfg.CreateMap<Review, ReviewViewDto>()
+                .AfterMap((src, dest) =>
+                { 
+                    dest.UserName = userManager.Users.First(u => u.Id == src.UserId).UserName!;
+                });
                 cfg.CreateMap<ReviewCreateDto, Review>();
                 cfg.CreateMap<ItemCreateUpdateDto, Item>();
                 cfg.CreateMap<Item, ItemViewDto>();

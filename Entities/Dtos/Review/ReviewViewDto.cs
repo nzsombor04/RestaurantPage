@@ -8,6 +8,8 @@ namespace Entities.Dtos.Review
 { 
     public class ReviewViewDto
     {
+
+        public string UserName { get; set; } = "";
         public string Text { get; set; } = "";
         public int Rating { get; set; }
 
