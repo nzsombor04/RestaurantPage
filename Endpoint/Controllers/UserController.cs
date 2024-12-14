@@ -45,21 +45,32 @@ namespace Endpoint.Controllers
 
         [HttpPost("register")]
         public async Task Register(UserInputDto dto)
-        { 
-            var existingUser = await userManager.FindByNameAsync(dto.Username);
-            if (existingUser != null)
+        {
+            var existingUserEmail = await userManager.FindByEmailAsync(dto.Email);
+            
+            if (existingUserEmail != null)
             {
-                throw new ArgumentException("Username already exists");
+                throw new ArgumentException("Email already exists");
             }
             else
             {
-                var user = new IdentityUser(dto.Username);
-                user.Email = dto.Email;
-                await userManager.CreateAsync(user, dto.Password);
-                if (userManager.Users.Count() == 1)
+                var existingUserName = await userManager.FindByNameAsync(dto.Username);
+
+                if (existingUserName != null)
                 {
-                    await roleManager.CreateAsync(new IdentityRole("Admin"));
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    throw new ArgumentException("Username already exists");
+                }
+
+                else
+                {
+                    var user = new IdentityUser(dto.Username);
+                    user.Email = dto.Email;
+                    await userManager.CreateAsync(user, dto.Password);
+                    if (userManager.Users.Count() == 1)
+                    {
+                        await roleManager.CreateAsync(new IdentityRole("Admin"));
+                        await userManager.AddToRoleAsync(user, "Admin");
+                    }
                 }
             }
         }
