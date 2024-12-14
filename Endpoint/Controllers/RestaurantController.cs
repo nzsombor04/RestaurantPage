@@ -1,5 +1,6 @@
 ﻿using Entities.Dtos.Restaurant;
 using Logic.Logic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Endpoint.Controllers
@@ -16,6 +17,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public void AddRestaurant(RestaurantCreateUpdateDto dto)
         { 
             logic.AddRestaurant(dto);
@@ -28,12 +30,14 @@ namespace Endpoint.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public void DeleteRestaurant(string id)
         {
             logic.DeleteRestaurant(id);
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public void UpdateRestaurant(string id, [FromBody] RestaurantCreateUpdateDto dto)
         {
             logic.UpdateRestaurant(id, dto);

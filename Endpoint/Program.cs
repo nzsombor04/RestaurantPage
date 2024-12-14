@@ -32,8 +32,8 @@ namespace Endpoint
                         option.Password.RequireNonAlphanumeric = false;
                         option.Password.RequireUppercase = false;
                         option.Password.RequireLowercase = false;
-                    }
-)
+                    })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<RestaurantPageContext>()
                 .AddDefaultTokenProviders();
 

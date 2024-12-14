@@ -17,7 +17,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public void AddItem(ItemCreateUpdateDto dto)
         {
             logic.AddItem(dto);
@@ -30,7 +30,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpDelete("id")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public void DeleteItem(string id)
         {
             logic.DeleteItem(id);

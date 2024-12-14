@@ -14,10 +14,12 @@ namespace Endpoint.Controllers
     public class UserController : ControllerBase
     {
         UserManager<IdentityUser> userManager;
+        RoleManager<IdentityRole> roleManager;
 
-        public UserController(UserManager<IdentityUser> userManager)
+        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.userManager = userManager;
+            this.roleManager = roleManager;
         }
 
         [HttpPost("register")]
@@ -25,6 +27,11 @@ namespace Endpoint.Controllers
         {
             var user = new IdentityUser(dto.Username);
             await userManager.CreateAsync(user, dto.Password);
+            if (userManager.Users.Count() == 1)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Admin"));
+                await userManager.AddToRoleAsync(user, "Admin");
+            }
         }
 
         [HttpPost("login")]
@@ -47,6 +54,12 @@ namespace Endpoint.Controllers
                     var claim = new List<Claim>();
                     claim.Add(new Claim(ClaimTypes.Name, user.UserName!));
                     claim.Add(new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()));
+
+                    foreach (var role in await userManager.GetRolesAsync(user))
+                    {
+                        claim.Add(new Claim(ClaimTypes.Role, role));
+                    }
+
                     int expiryInMinutes = 24 * 60;
                     var token = GenerateAccessToken(claim, expiryInMinutes);
                     return Ok(new LoginResultDto()
