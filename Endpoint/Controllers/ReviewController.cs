@@ -1,4 +1,5 @@
-﻿using Entities.Dtos.Review;
+﻿using Data;
+using Entities.Dtos.Review;
 using Logic.Logic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,10 +11,10 @@ namespace Endpoint.Controllers
     public class ReviewController : ControllerBase
     {
         ReviewLogic logic;
-        UserManager<IdentityUser> userManager;
+        UserManager<AppUser> userManager;
 
 
-        public ReviewController(ReviewLogic logic, UserManager<IdentityUser> userManager)
+        public ReviewController(ReviewLogic logic, UserManager<AppUser> userManager)
         {
             this.logic = logic;
             this.userManager = userManager;

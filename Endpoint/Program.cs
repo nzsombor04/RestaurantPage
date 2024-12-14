@@ -24,7 +24,7 @@ namespace Endpoint
             builder.Services.AddTransient<ItemLogic>();
             builder.Services.AddTransient<ReviewLogic>();
 
-            builder.Services.AddIdentity<IdentityUser, IdentityRole>(
+            builder.Services.AddIdentity<AppUser, IdentityRole>(
                     option =>
                     {
                         option.Password.RequireDigit = false;

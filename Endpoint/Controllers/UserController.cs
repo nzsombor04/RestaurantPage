@@ -1,4 +1,5 @@
-﻿using Entities.Dtos.User;
+﻿using Data;
+using Entities.Dtos.User;
 using Logic.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -15,11 +16,11 @@ namespace Endpoint.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
-        UserManager<IdentityUser> userManager;
+        UserManager<AppUser> userManager;
         RoleManager<IdentityRole> roleManager;
         DtoProvider dtoProvider;
 
-        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, DtoProvider dtoProvider)
+        public UserController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, DtoProvider dtoProvider)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
@@ -63,8 +64,10 @@ namespace Endpoint.Controllers
 
                 else
                 {
-                    var user = new IdentityUser(dto.Username);
+                    var user = new AppUser(dto.Username);
                     user.Email = dto.Email;
+                    user.FirstName = dto.FirstName;
+                    user.LastName = dto.LastName;
                     await userManager.CreateAsync(user, dto.Password);
                     if (userManager.Users.Count() == 1)
                     {

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Data;
 using Entities.Dtos.Item;
 using Entities.Dtos.Restaurant;
 using Entities.Dtos.Review;
@@ -16,10 +17,10 @@ namespace Logic.Helper
     public class DtoProvider
     {
 
-        UserManager<IdentityUser> userManager;
+        UserManager<AppUser> userManager;
         public Mapper Mapper { get; }
 
-        public DtoProvider(UserManager<IdentityUser> userManager)
+        public DtoProvider(UserManager<AppUser> userManager)
         {
             this.userManager = userManager;
 
@@ -33,7 +34,7 @@ namespace Logic.Helper
                     dest.AvarageRating = src.Reviews?.Count() > 0 ? src.Reviews.Average(r => r.Rating) : 0;
                 });
 
-                cfg.CreateMap<IdentityUser, UserViewDto>()
+                cfg.CreateMap<AppUser, UserViewDto>()
                 .AfterMap((src, dest) =>
                 {
                     dest.IsAdmin = userManager.IsInRoleAsync(src, "Admin").Result;
@@ -42,8 +43,9 @@ namespace Logic.Helper
                 cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>();
                 cfg.CreateMap<Review, ReviewViewDto>()
                 .AfterMap((src, dest) =>
-                { 
-                    dest.UserName = userManager.Users.First(u => u.Id == src.UserId).UserName!;
+                {
+                    var user = userManager.Users.First(u => u.Id == src.UserId);
+                    dest.UserFullName = user.LastName! + " " + user.FirstName;
                 });
                 cfg.CreateMap<ReviewCreateDto, Review>();
                 cfg.CreateMap<ItemCreateUpdateDto, Item>();

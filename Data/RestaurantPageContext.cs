@@ -14,6 +14,7 @@ namespace Data
         public DbSet<Restaurant> Restaurants { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<AppUser> AppUsers { get; set; }
 
         public RestaurantPageContext(DbContextOptions<RestaurantPageContext> ctx) : base(ctx)
         {
