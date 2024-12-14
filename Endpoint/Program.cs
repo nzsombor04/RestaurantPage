@@ -1,6 +1,7 @@
 using Data;
 using Logic.Helper;
 using Logic.Logic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace Endpoint
@@ -19,6 +20,18 @@ namespace Endpoint
             builder.Services.AddTransient<ItemLogic>();
             builder.Services.AddTransient<ReviewLogic>();
 
+            builder.Services.AddIdentity<IdentityUser, IdentityRole>(
+                    option =>
+                    {
+                        option.Password.RequireDigit = false;
+                        option.Password.RequiredLength = 6;
+                        option.Password.RequireNonAlphanumeric = false;
+                        option.Password.RequireUppercase = false;
+                        option.Password.RequireLowercase = false;
+                    }
+)
+                .AddEntityFrameworkStores<RestaurantPageContext>()
+                .AddDefaultTokenProviders();
 
             builder.Services.AddDbContext<RestaurantPageContext>(options =>
             {
