@@ -1,4 +1,5 @@
 ﻿using Entities.Dtos.User;
+using Logic.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,19 @@ namespace Endpoint.Controllers
     {
         UserManager<IdentityUser> userManager;
         RoleManager<IdentityRole> roleManager;
+        DtoProvider dtoProvider;
 
-        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager)
+        public UserController(UserManager<IdentityUser> userManager, RoleManager<IdentityRole> roleManager, DtoProvider dtoProvider)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.dtoProvider = dtoProvider;
+        }
+
+        [HttpGet]
+        public IEnumerable<UserViewDto> GetAllUsers()
+        {
+            return userManager.Users.Select(u => dtoProvider.Mapper.Map<UserViewDto>(u));
         }
 
         [HttpGet("grantadmin/{username}")]

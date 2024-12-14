@@ -2,6 +2,7 @@
 using Entities.Dtos.Item;
 using Entities.Dtos.Restaurant;
 using Entities.Dtos.Review;
+using Entities.Dtos.User;
 using Entities.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -30,6 +31,12 @@ namespace Logic.Helper
                 .AfterMap((src, dest) => 
                 { 
                     dest.AvarageRating = src.Reviews?.Count() > 0 ? src.Reviews.Average(r => r.Rating) : 0;
+                });
+
+                cfg.CreateMap<IdentityUser, UserViewDto>()
+                .AfterMap((src, dest) =>
+                {
+                    dest.IsAdmin = userManager.IsInRoleAsync(src, "Admin").Result;
                 });
 
                 cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>();
