@@ -1,5 +1,6 @@
 ﻿using Entities.Dtos.Review;
 using Logic.Logic;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Endpoint.Controllers
@@ -9,16 +10,21 @@ namespace Endpoint.Controllers
     public class ReviewController : ControllerBase
     {
         ReviewLogic logic;
+        UserManager<IdentityUser> userManager;
 
-        public ReviewController(ReviewLogic logic)
+
+        public ReviewController(ReviewLogic logic, UserManager<IdentityUser> userManager)
         {
             this.logic = logic;
+            this.userManager = userManager;
         }
 
         [HttpPost]
-        public void AddRating(ReviewCreateDto dto)
+        public async Task AddRating(ReviewCreateDto dto)
         {
-            logic.AddReview(dto);
+            var user = await userManager.GetUserAsync(User);
+
+            logic.AddReview(dto, user.Id);
         }
 
         [HttpDelete]

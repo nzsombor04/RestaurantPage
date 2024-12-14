@@ -21,9 +21,10 @@ namespace Logic.Logic
             this.dtoProvider = dtoProvider;
         }
 
-        public void AddReview(ReviewCreateDto dto)
+        public void AddReview(ReviewCreateDto dto, string userId)
         {
             var model = dtoProvider.Mapper.Map<Review>(dto);
+            model.UserId = userId;
             repo.Create(model);
         }
 
