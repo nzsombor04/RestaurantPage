@@ -54,6 +54,16 @@ namespace Endpoint.Controllers
             }
         }
 
+        [HttpGet("revokeadmin/{username}")]
+        [Authorize(Roles = "Admin")]
+        public async Task RevokeAdmin(string username)
+        {
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+                throw new ArgumentException("User not found");
+            await userManager.RemoveFromRoleAsync(user, "Admin");
+        }
+
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserInputDto dto)
         {
