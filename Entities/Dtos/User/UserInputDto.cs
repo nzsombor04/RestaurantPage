@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.User
 {
-    public class UserCreateDto
+    public class UserInputDto
     {
         [MinLength(1)]
         public required string Email { get; set; } = "";
