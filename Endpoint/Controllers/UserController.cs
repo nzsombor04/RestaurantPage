@@ -89,7 +89,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login(UserInputDto dto)
+        public async Task<IActionResult> Login(UserLoginDto dto)
         {
             var user = await userManager.FindByNameAsync(dto.Username);
             if (user == null)
