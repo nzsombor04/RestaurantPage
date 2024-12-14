@@ -9,6 +9,8 @@ using System.Text;
 
 namespace Endpoint.Controllers
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class UserController : ControllerBase
     {
         UserManager<IdentityUser> userManager;
