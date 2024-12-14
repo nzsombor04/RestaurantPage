@@ -9,6 +9,9 @@ namespace Entities.Dtos.User
 {
     public class UserInputDto
     {
+        [MinLength(1)]
+        public required string Email { get; set; } = "";
+
         [MinLength(5)]
         public required string Username { get; set; } = "";
 

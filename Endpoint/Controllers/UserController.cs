@@ -54,6 +54,7 @@ namespace Endpoint.Controllers
             else
             {
                 var user = new IdentityUser(dto.Username);
+                user.Email = dto.Email;
                 await userManager.CreateAsync(user, dto.Password);
                 if (userManager.Users.Count() == 1)
                 {
