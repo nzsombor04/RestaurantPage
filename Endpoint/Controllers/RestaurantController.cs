@@ -36,11 +36,18 @@ namespace Endpoint.Controllers
             logic.DeleteRestaurant(id);
         }
 
-        [HttpPut]
+        [HttpPut("/UpdateRestaurant")]
         [Authorize(Roles = "Admin")]
         public void UpdateRestaurant(string id, [FromBody] RestaurantCreateUpdateDto dto)
         {
             logic.UpdateRestaurant(id, dto);
+        }
+
+        [HttpPut("/UpdateRestaurantMenu")]
+        [Authorize(Roles = "Manager")]
+        public void UpdateRestaurantMenu(string id, [FromBody] RestaurantMenuUpdateDto dto)
+        {
+            logic.UpdateRestaurantMenu(id, dto);
         }
 
         [HttpGet("{id}")]

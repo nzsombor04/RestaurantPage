@@ -61,6 +61,17 @@ namespace Logic.Logic
             repo.Update(old);
         }
 
+        public void UpdateRestaurantMenu(string id, RestaurantMenuUpdateDto dto)
+        {
+            var old = repo.FindById(id);
+
+            old.Menu.Clear();
+
+            old.Menu = dto.Menu.Select(itemId => itemRepo.FindById(itemId)).ToList();
+
+            repo.Update(old);
+        }
+
         public RestaurantViewDto GetRestaurant(string id)
         {
             return dtoProvider.Mapper.Map<RestaurantViewDto>(repo.FindById(id));
