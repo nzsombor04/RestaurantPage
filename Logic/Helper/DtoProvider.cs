@@ -26,7 +26,19 @@ namespace Logic.Helper
 
             var config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Restaurant, RestaurantViewDto>();
+                cfg.CreateMap<Restaurant, RestaurantViewDto>().AfterMap((src, dest) =>
+                {
+                    var manager = userManager.Users.FirstOrDefault(u => u.Id == src.ManagerId);
+
+                    if (manager == null)
+                    {
+                        dest.ManagerName = "";
+                    }
+                    else
+                    {
+                        dest.ManagerName = manager.LastName! + " " + manager.FirstName;
+                    }
+                }); ;
 
                 cfg.CreateMap<Restaurant, RestaurantShortViewDto>()
                 .AfterMap((src, dest) => 

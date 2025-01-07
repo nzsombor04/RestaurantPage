@@ -1,4 +1,5 @@
-﻿using Entities.Dtos.Item;
+﻿using Data;
+using Entities.Dtos.Item;
 using Entities.Dtos.Review;
 using Entities.Models;
 using System;
@@ -16,7 +17,8 @@ namespace Entities.Dtos.Restaurant
         public string Name { get; set; } = "";
         public string Address { get; set; } = "";
         public string Phone { get; set; } = "";
-
+        public string ManagerId { get; set; } = "";
+        public string ManagerName { get; set; } = "";
         public IEnumerable<ItemViewDto>? Menu { get; set; }
         public IEnumerable<ReviewViewDto>? Reviews { get; set; }
 

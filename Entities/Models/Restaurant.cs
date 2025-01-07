@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using Data;
 
 namespace Entities.Models
 {
@@ -39,5 +40,8 @@ namespace Entities.Models
 
         [NotMapped]
         public virtual ICollection<Review> Reviews { get; set; }
+
+        [StringLength(50)]
+        public string ManagerId { get; set; } = "";
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Data;
 using Entities.Dtos.User;
+using Entities.Models;
 using Logic.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -19,12 +20,14 @@ namespace Endpoint.Controllers
         UserManager<AppUser> userManager;
         RoleManager<IdentityRole> roleManager;
         DtoProvider dtoProvider;
+        Repository<Restaurant> restaurantRepo;
 
-        public UserController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, DtoProvider dtoProvider)
+        public UserController(UserManager<AppUser> userManager, RoleManager<IdentityRole> roleManager, DtoProvider dtoProvider, Repository<Restaurant> restaurantRepo)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             this.dtoProvider = dtoProvider;
+            this.restaurantRepo = restaurantRepo;
         }
 
         [HttpGet]
@@ -43,6 +46,31 @@ namespace Endpoint.Controllers
             await userManager.AddToRoleAsync(user, "Admin");
         }
 
+        [HttpGet("grantmanager/{username}")]
+        [Authorize(Roles = "Admin")]
+        public async Task GrantManager(string username, string restaurantid)
+        {
+            var role = await roleManager.RoleExistsAsync("Manager");
+            if (!role)
+            {
+                await roleManager.CreateAsync(new IdentityRole("Manager"));
+            }
+
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null)
+                throw new ArgumentException("User not found");
+
+            var restaurant = restaurantRepo.FindById(restaurantid);
+
+            if (restaurant == null)
+                throw new ArgumentException("Restaurant not found");
+
+            await userManager.AddToRoleAsync(user, "Manager");
+
+            restaurant.ManagerId = user.Id;
+
+            restaurantRepo.Update(restaurant);
+        }
 
         [HttpPost("register")]
         public async Task Register(UserInputDto dto)
@@ -78,14 +106,35 @@ namespace Endpoint.Controllers
             }
         }
 
-        [HttpGet("revokeadmin/{username}")]
+        [HttpGet("revokerole/{username}")]
         [Authorize(Roles = "Admin")]
-        public async Task RevokeAdmin(string username)
+        public async Task RevokeRole(string username)
         {
             var user = await userManager.FindByNameAsync(username);
             if (user == null)
                 throw new ArgumentException("User not found");
-            await userManager.RemoveFromRoleAsync(user, "Admin");
+            
+            var isManager = await userManager.IsInRoleAsync(user, "Manager");
+
+            if (isManager)
+            {
+                var restaurant = restaurantRepo.GetAll().Where(r => r.ManagerId == user.Id);
+
+                foreach (var r in restaurant)
+                {
+                    r.ManagerId = "";
+                    restaurantRepo.Update(r);
+                }
+
+                await userManager.RemoveFromRoleAsync(user, "Manager");
+            }
+
+            var roles = await userManager.GetRolesAsync(user);
+
+            if (roles.Any())
+            { 
+                await userManager.RemoveFromRolesAsync(user, roles);
+            }
         }
 
         [HttpPost("login")]
