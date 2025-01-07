@@ -1,6 +1,7 @@
 ﻿using Data;
 using Entities.Dtos.Review;
 using Logic.Logic;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,6 +22,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task AddRating(ReviewCreateDto dto)
         {
             var user = await userManager.GetUserAsync(User);
@@ -29,6 +31,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Admin")]
         public void DeleteRating(string id)
         {
             logic.DeleteReview(id);

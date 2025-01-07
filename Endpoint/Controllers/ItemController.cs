@@ -37,7 +37,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpPut("id")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public void UpdateItem(string id, [FromBody] ItemCreateUpdateDto dto)
         {
             logic.UpdateItem(id, dto);

@@ -31,6 +31,7 @@ namespace Endpoint.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IEnumerable<UserViewDto> GetAllUsers()
         {
             return userManager.Users.Select(u => dtoProvider.Mapper.Map<UserViewDto>(u));
