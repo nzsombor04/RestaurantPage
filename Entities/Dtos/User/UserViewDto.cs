@@ -12,7 +12,7 @@ namespace Entities.Dtos.User
 
         public string UserName { get; set; } = "";
 
-        public bool IsAdmin { get; set; }
+        public string Role { get; set; } = "";
 
         public string FirstName { get; set; } = "";
 

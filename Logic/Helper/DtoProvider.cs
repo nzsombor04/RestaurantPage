@@ -49,7 +49,19 @@ namespace Logic.Helper
                 cfg.CreateMap<AppUser, UserViewDto>()
                 .AfterMap((src, dest) =>
                 {
-                    dest.IsAdmin = userManager.IsInRoleAsync(src, "Admin").Result;
+                    var roles = userManager.GetRolesAsync(src).Result;
+                    if (roles.Contains("Admin"))
+                    {
+                        dest.Role = "Admin";
+                    }
+                    else if (roles.Contains("Manager"))
+                    {
+                        dest.Role = "Manager";
+                    }
+                    else
+                    {
+                        dest.Role = "";
+                    }
                 });
 
                 cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>().ForMember(dest => dest.Menu, opt => opt.Ignore());
