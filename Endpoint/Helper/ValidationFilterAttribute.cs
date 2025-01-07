@@ -10,6 +10,7 @@ namespace Endpoint.Helper
         {
             if (!context.ModelState.IsValid)
             {
+                //context.Result = new UnprocessableEntityObjectResult(context.ModelState);
                 var error = new ErrorModel
                 (
                     String.Join(',',

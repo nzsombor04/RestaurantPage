@@ -1,4 +1,5 @@
 using Data;
+using Endpoint.Helper;
 using Logic.Helper;
 using Logic.Logic;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -62,7 +63,11 @@ namespace Endpoint
                 options.UseLazyLoadingProxies();
             });
 
-            builder.Services.AddControllers();
+            builder.Services.AddControllers(opt =>
+            {
+                opt.Filters.Add<ExceptionFilter>();
+                opt.Filters.Add<ValidationFilterAttribute>();
+            });
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
 
