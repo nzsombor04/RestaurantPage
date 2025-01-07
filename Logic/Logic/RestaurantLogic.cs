@@ -13,17 +13,21 @@ namespace Logic.Logic
     public class RestaurantLogic
     {
         Repository<Restaurant> repo;
+        Repository<Item> itemRepo;
         DtoProvider dtoProvider;
 
-        public RestaurantLogic(Repository<Restaurant> repo, DtoProvider dtoProvider)
+        public RestaurantLogic(Repository<Restaurant> repo, DtoProvider dtoProvider, Repository<Item> itemRepo)
         {
             this.repo = repo;
             this.dtoProvider = dtoProvider;
+            this.itemRepo = itemRepo;
         }
 
         public void AddRestaurant(RestaurantCreateUpdateDto dto)
         {
             Restaurant r = dtoProvider.Mapper.Map<Restaurant>(dto);
+
+            r.Menu = dto.Menu.Select(itemId => itemRepo.FindById(itemId)).ToList();
 
             if (repo.GetAll().FirstOrDefault(x => x.Address == r.Address) == null)
             {
@@ -48,6 +52,11 @@ namespace Logic.Logic
         public void UpdateRestaurant(string id, RestaurantCreateUpdateDto dto)
         {
             var old = repo.FindById(id);
+
+            old.Menu.Clear();
+
+            old.Menu = dto.Menu.Select(itemId => itemRepo.FindById(itemId)).ToList();
+            
             dtoProvider.Mapper.Map(dto, old);
             repo.Update(old);
         }

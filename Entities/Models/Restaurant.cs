@@ -20,6 +20,7 @@ namespace Entities.Models
             Phone = phone;
         }
 
+
         [Key]
         [StringLength(50)]
         public string Id { get; set; }

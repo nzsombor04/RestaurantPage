@@ -40,7 +40,7 @@ namespace Logic.Helper
                     dest.IsAdmin = userManager.IsInRoleAsync(src, "Admin").Result;
                 });
 
-                cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>();
+                cfg.CreateMap<RestaurantCreateUpdateDto, Restaurant>().ForMember(dest => dest.Menu, opt => opt.Ignore());
                 cfg.CreateMap<Review, ReviewViewDto>()
                 .AfterMap((src, dest) =>
                 {

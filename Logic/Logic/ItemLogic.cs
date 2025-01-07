@@ -35,10 +35,6 @@ namespace Logic.Logic
 
             if (repo.GetAll().FirstOrDefault(x => x.Name == i.Name) == null)
             {
-                i.Restaurants = restaurantRepo.GetAll() 
-                    .Where(x => dto.RestaurantId.Contains(x.Id))
-                    .ToList();
-
                 repo.Create(i);
             }
             else
@@ -55,12 +51,6 @@ namespace Logic.Logic
         public void UpdateItem(string id, ItemCreateUpdateDto dto)
         {
             var old = repo.FindById(id);
-
-            old.Restaurants.Clear();
-
-            old.Restaurants = restaurantRepo.GetAll()
-                .Where(x => dto.RestaurantId.Contains(x.Id))
-                .ToList();
 
             dtoProvider.Mapper.Map(dto, old);
             repo.Update(old);

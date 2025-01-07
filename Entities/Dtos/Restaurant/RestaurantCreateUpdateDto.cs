@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Dtos.Item;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace Entities.Dtos.Restaurant
         public required string Name { get; set; } = "";
         public required string Address { get; set; } = "";
         public required string Phone { get; set; } = "";
+        public List<string> Menu { get; set; } = new List<string>();
     }
 }
