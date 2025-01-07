@@ -2,6 +2,7 @@
 using Logic.Logic;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace Endpoint.Controllers
 {
@@ -47,6 +48,13 @@ namespace Endpoint.Controllers
         [Authorize(Roles = "Manager")]
         public void UpdateRestaurantMenu(string id, [FromBody] RestaurantMenuUpdateDto dto)
         {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (userId != logic.GetRestaurant(id).ManagerId)
+            {
+                throw new UnauthorizedAccessException("You are not the manager of this restaurant!");
+            }
+
             logic.UpdateRestaurantMenu(id, dto);
         }
 
